@@ -1,0 +1,26 @@
+server:
+  port: 8080 # O Angular vai bater apenas nesta porta
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        # 1. Rotas do Clinical Service
+        - id: clinical-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/records/**
+
+        # 2. Rotas do Appointment Service
+        - id: appointment-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/appointments/**
+
+        # 3. Rotas do Identity Service
+        - id: identity-service
+          uri: http://localhost:8083 # Substitua pela porta real do seu ms de identidade
+          predicates:
+            - Path=/auth/**, /doctors/**, /patients/**
