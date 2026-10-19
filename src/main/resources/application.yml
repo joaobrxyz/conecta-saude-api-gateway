@@ -6,18 +6,20 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      routes:
-        - id: clinical-service
-          uri: http://localhost:8083
-          predicates:
-            - Path=/records/**
+      server:
+        webmvc:
+          routes:
+            - id: clinical-service
+              uri: ${CLINICAL_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/records/**,/exams/**
 
-        - id: appointment-service
-          uri: http://localhost:8081
-          predicates:
-            - Path=/appointments/**
+            - id: appointment-service
+              uri: ${APPOINTMENT_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/appointments/**
 
-        - id: identity-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/auth/**, /doctors/**, /patients/**
+            - id: identity-service
+              uri: ${IDENTITY_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/auth/**,/doctors/**,/patients/**,/admins/**,/receptionists/**,/specialties/**,/account/**
